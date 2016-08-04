@@ -19,11 +19,11 @@ typedef NSIndexPath LogicIndexPath;
 @class YFAssistantTableView;
 @protocol YFAssistantDelegate <NSObject>
 @required
+- (UITableViewCell *)YFAssistantTableView:(YFAssistantTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+@optional
 - (BOOL)YFAssistantTableView:(YFAssistantTableView *)tableView shouldSpreadAssistantAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)YFAssistantTableView:(YFAssistantTableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)YFAssistantTableView:(YFAssistantTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (UITableViewCell *)YFAssistantTableView:(YFAssistantTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-@optional
 - (UITableViewRowAnimation )YFAssistantTableViewSpreadAnimation:(YFAssistantTableView *)tableView;
 - (UITableViewRowAnimation )YFAssistantTableViewRetractAnimation:(YFAssistantTableView *)tableView;
 @end
