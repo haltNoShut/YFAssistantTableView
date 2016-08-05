@@ -50,10 +50,11 @@ SEL stitchingHookSelector(SEL selector){
 
 @implementation YFAssistantTableView
 
-#pragma mark 
+#pragma mark
 
 - (void)spreadAssistant:(LogicIndexPath *)indexPath{
     if ([self.spreadAssistants containsObject:indexPath]) {
+        [self retractAssistant:indexPath];
         return;
     }
     if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableView:shouldSpreadAssistantAtIndexPath:)] && [self.assistantDelegate YFAssistantTableView:self shouldSpreadAssistantAtIndexPath:indexPath]) {
@@ -62,10 +63,9 @@ SEL stitchingHookSelector(SEL selector){
             animation = [self.assistantDelegate YFAssistantTableViewSpreadAnimation:self];
         }
         [self.spreadAssistants addObject:indexPath];
-        ActualIndexPath *actualIndexPath = [self logicIndexPath2Actual:indexPath];
-        ActualIndexPath *actualAssistantIndexPath = [NSIndexPath indexPathForRow:actualIndexPath.row+1 inSection:actualIndexPath.section];
-        [self.assistantsIndexPaths addObject:actualAssistantIndexPath];
-        [self insertRowsAtIndexPaths:@[actualAssistantIndexPath] withRowAnimation:animation];
+        ActualIndexPath *actualIndexPath = [self YF_logicIndexPath2Actual:indexPath];
+        [self addAssistantIndexPath:actualIndexPath];
+        [self insertRowsAtIndexPaths:@[actualIndexPath] withRowAnimation:animation];
     }
     
 }
@@ -76,11 +76,10 @@ SEL stitchingHookSelector(SEL selector){
         if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableViewRetractAnimation:)]) {
             animation = [self.assistantDelegate YFAssistantTableViewRetractAnimation:self];
         }
-        ActualIndexPath *actualIndexPath = [self logicIndexPath2Actual:indexPath];
-        ActualIndexPath *actualAssistantIndexPath = [NSIndexPath indexPathForRow:actualIndexPath.row+1 inSection:actualIndexPath.section];
+        ActualIndexPath *actualIndexPath = [self YF_logicIndexPath2Actual:indexPath];
         [self.spreadAssistants removeObject:indexPath];
-        [self.assistantsIndexPaths removeObject:actualAssistantIndexPath];
-        [self deleteRowsAtIndexPaths:@[actualAssistantIndexPath] withRowAnimation:animation];
+        [self removeAssistantIndexPath:actualIndexPath];
+        [self deleteRowsAtIndexPaths:@[actualIndexPath] withRowAnimation:animation];
     }
     
 }
@@ -93,7 +92,6 @@ SEL stitchingHookSelector(SEL selector){
     struct objc_method_description * method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
     for (int i=0; i<count; i++) {
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
-            NSLog(@"注册delegate:%@",NSStringFromSelector(method_des->name));
             replaceDelegate(method_des->name);
         }
         method_des++;
@@ -101,7 +99,6 @@ SEL stitchingHookSelector(SEL selector){
     method_des = protocol_copyMethodDescriptionList(delegateProtocol, YES, YES, &count);
     for (int i=0; i<count; i++) {
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
-            NSLog(@"注册delegate:%@",NSStringFromSelector(method_des->name));
             replaceDelegate(method_des->name);
         }
         method_des++;
@@ -115,7 +112,6 @@ SEL stitchingHookSelector(SEL selector){
     struct objc_method_description * method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
     for (int i=0; i<count; i++) {
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
-            NSLog(@"注册dataSource:%@",NSStringFromSelector(method_des->name));
             replaceDatasource(method_des->name);
         }
         method_des++;
@@ -123,7 +119,6 @@ SEL stitchingHookSelector(SEL selector){
     method_des = protocol_copyMethodDescriptionList(delegateProtocol, YES, YES, &count);
     for (int i=0; i<count; i++) {
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
-            NSLog(@"注册dataSource:%@",NSStringFromSelector(method_des->name));
             replaceDatasource(method_des->name);
         }
         method_des++;
@@ -167,6 +162,33 @@ SEL stitchingHookSelector(SEL selector){
         }
     }];
     return [NSIndexPath indexPathForRow:row inSection:section];
+}
+
+- (ActualIndexPath *)YF_logicIndexPath2Actual:(LogicIndexPath *)indexPath{
+    ActualIndexPath *actualBuf = [self logicIndexPath2Actual:indexPath];
+    return [NSIndexPath indexPathForRow:actualBuf.row+1 inSection:actualBuf.section];
+}
+
+- (void)addAssistantIndexPath:(ActualIndexPath *)indexPath{
+    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
+    [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.section == indexPath.section && obj.row > indexPath.row) {
+            NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row+1 inSection:obj.section];
+            [self.assistantsIndexPaths replaceObjectAtIndex:idx withObject:newIndexPath];
+        }
+    }];
+    [self.assistantsIndexPaths addObject:indexPath];
+}
+
+- (void)removeAssistantIndexPath:(ActualIndexPath *)indexPath{
+    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
+    [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.section == indexPath.section && obj.row > indexPath.row) {
+            NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row-1 inSection:obj.section];
+            [self.assistantsIndexPaths replaceObjectAtIndex:idx withObject:newIndexPath];
+        }
+    }];
+    [self.assistantsIndexPaths removeObject:indexPath];
 }
 
 #pragma mark delegate
