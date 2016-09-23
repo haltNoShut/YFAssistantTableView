@@ -170,7 +170,7 @@ SEL stitchingHookSelector(SEL selector){
 }
 
 - (void)addAssistantIndexPath:(ActualIndexPath *)indexPath{
-    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
+    NSArray *indexPathBuf = [self.assistantsIndexPaths mutableCopy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row+1 inSection:obj.section];
@@ -181,7 +181,7 @@ SEL stitchingHookSelector(SEL selector){
 }
 
 - (void)removeAssistantIndexPath:(ActualIndexPath *)indexPath{
-    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
+    NSArray *indexPathBuf = [self.assistantsIndexPaths mutableCopy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row-1 inSection:obj.section];
