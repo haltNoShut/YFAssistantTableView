@@ -73,4 +73,12 @@
     return YES;
 }
 
+- (UITableViewRowAnimation)YFAssistantTableViewSpreadAnimation:(YFAssistantTableView *)tableView{
+    return UITableViewRowAnimationRight;
+}
+
+- (UITableViewRowAnimation)YFAssistantTableViewRetractAnimation:(YFAssistantTableView *)tableView{
+    return UITableViewRowAnimationMiddle;
+}
+
 @end

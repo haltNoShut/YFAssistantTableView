@@ -36,13 +36,24 @@ typedef NSIndexPath LogicIndexPath;
  *  YFAssistantDelegate方法内调用系统原生方法时，需要YF_logicIndexPath2Actual还原成真实indexPath
  */
 - (CGFloat)YFAssistantTableView:(YFAssistantTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+/**
+ *  展开时动画效果
+ */
 - (UITableViewRowAnimation )YFAssistantTableViewSpreadAnimation:(YFAssistantTableView *)tableView;
+/**
+ *  缩回时动画效果
+ */
 - (UITableViewRowAnimation )YFAssistantTableViewRetractAnimation:(YFAssistantTableView *)tableView;
 @end
 
 @interface YFAssistantTableView : UITableView
 
 @property(nonatomic,weak)id<YFAssistantDelegate> assistantDelegate;
+
+/**
+ *  如果已经展开当前indexpath，再次调用spreadAssistant时，是否缩回,默认NO
+ */
+@property(nonatomic)BOOL retractWhenSpread;
 
 - (void)spreadAssistant:(NSIndexPath *)indexPath;
 

@@ -54,7 +54,9 @@ SEL stitchingHookSelector(SEL selector){
 
 - (void)spreadAssistant:(LogicIndexPath *)indexPath{
     if ([self.spreadAssistants containsObject:indexPath]) {
-        [self retractAssistant:indexPath];
+        if (self.retractWhenSpread) {
+            [self retractAssistant:indexPath];
+        }
         return;
     }
     if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableView:shouldSpreadAssistantAtIndexPath:)] && [self.assistantDelegate YFAssistantTableView:self shouldSpreadAssistantAtIndexPath:indexPath]) {
