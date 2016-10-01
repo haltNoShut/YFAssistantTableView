@@ -1,0 +1,10 @@
+platform :ios,'5.0'
+
+target “AssistantDemo” do
+
+pod 'Mantle', '~> 1.5.4'
+platform :ios, '7.0'
+
+pod 'AFNetworking', '~> 3.1.0'
+
+end

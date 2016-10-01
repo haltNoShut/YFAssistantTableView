@@ -1,15 +1,13 @@
 //
-//  ViewController.h
+//  NewsViewController.h
 //  AssistantDemo
 //
-//  Created by 杨帆 on 2016/9/20.
+//  Created by 杨帆 on 2016/10/1.
 //  Copyright © 2016年 杨帆. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface NewsViewController : UIViewController
 
 @end
-
