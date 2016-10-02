@@ -13,17 +13,20 @@
 {
     
     __weak IBOutlet UIWebView *_webView;
+    __weak IBOutlet UIActivityIndicatorView *_ACIn;
 }
 
 -(void)prepareForReuse{
     
     [super prepareForReuse];
     [_webView loadHTMLString:@"" baseURL:nil];
+    [_ACIn startAnimating];
 }
 
 - (void)setModel:(DetailNewsModel *)model{
     
     _model = model;
+    [_ACIn stopAnimating];
     [_webView loadHTMLString:model.content baseURL:nil];
     
 }

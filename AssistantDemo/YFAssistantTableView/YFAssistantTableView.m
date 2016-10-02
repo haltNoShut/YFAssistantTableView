@@ -14,10 +14,10 @@
 #define replaceDatasource(selector) replaceMethod(selector,dataSource)
 
 #define replaceMethod(selector,className) do{\
-if (![className respondsToSelector:selector]) {break;}\
-IMP imp = class_getMethodImplementation([self class], stitchingHookSelector(selector));\
+if (![className respondsToSelector:selector]) {continue;}\
 Method method1 = class_getInstanceMethod([className class], selector);\
 const char *type = method_getTypeEncoding(method1);\
+IMP imp = class_getMethodImplementation([self class], stitchingHookSelector(selector));\
 class_addMethod([className class], stitchingHookSelector(selector), imp, type);\
 Method method2 = class_getInstanceMethod([className class], stitchingHookSelector(selector));\
 method_exchangeImplementations(method1, method2);\
@@ -37,11 +37,14 @@ while (0);
 @end
 
 SEL stitchingHookSelector(SEL selector){
+    
     NSString *originName = NSStringFromSelector(selector);
     NSString *stitchingName;
     char headerChar = [originName characterAtIndex:0];
     if (headerChar <=122 && headerChar >=97) {
+        
         headerChar -= 32;
+        
     }
     stitchingName = [originName stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[NSString alloc]initWithUTF8String:&headerChar]];
     stitchingName = [@"hook" stringByAppendingString:stitchingName];
@@ -53,30 +56,43 @@ SEL stitchingHookSelector(SEL selector){
 #pragma mark
 
 - (void)spreadAssistant:(LogicIndexPath *)indexPath{
+    
     if ([self.spreadAssistants containsObject:indexPath]) {
+        
         if (self.retractWhenSpread) {
+            
             [self retractAssistant:indexPath];
+            
         }
         return;
+        
     }
     if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableView:shouldSpreadAssistantAtIndexPath:)] && [self.assistantDelegate YFAssistantTableView:self shouldSpreadAssistantAtIndexPath:indexPath]) {
+        
         UITableViewRowAnimation animation = UITableViewRowAnimationMiddle;
         if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableViewSpreadAnimation:)]) {
+            
             animation = [self.assistantDelegate YFAssistantTableViewSpreadAnimation:self];
+            
         }
         [self.spreadAssistants addObject:indexPath];
         ActualIndexPath *actualIndexPath = [self YF_logicIndexPath2Actual:indexPath];
         [self addAssistantIndexPath:actualIndexPath];
         [self insertRowsAtIndexPaths:@[actualIndexPath] withRowAnimation:animation];
+        
     }
     
 }
 
 - (void)retractAssistant:(LogicIndexPath *)indexPath{
+    
     if ([self.spreadAssistants containsObject:indexPath]) {
+        
         UITableViewRowAnimation animation = UITableViewRowAnimationMiddle;
         if ([self.assistantDelegate respondsToSelector:@selector(YFAssistantTableViewRetractAnimation:)]) {
+            
             animation = [self.assistantDelegate YFAssistantTableViewRetractAnimation:self];
+            
         }
         ActualIndexPath *actualIndexPath = [self YF_logicIndexPath2Actual:indexPath];
         [self.spreadAssistants removeObject:indexPath];
@@ -86,60 +102,84 @@ SEL stitchingHookSelector(SEL selector){
     
 }
 
-
 - (void)setDelegate:(id<UITableViewDelegate>)delegate{
+    
     [super setDelegate:delegate];
     Protocol *delegateProtocol = objc_getProtocol("UITableViewDelegate");
     unsigned int count;
-    struct objc_method_description * method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
+    struct objc_method_description *method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
     for (int i=0; i<count; i++) {
+        
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
+            
             replaceDelegate(method_des->name);
+            
         }
         method_des++;
-    }
+        
+    }    
+    
     method_des = protocol_copyMethodDescriptionList(delegateProtocol, YES, YES, &count);
     for (int i=0; i<count; i++) {
+        
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
+            
             replaceDelegate(method_des->name);
+            
         }
         method_des++;
+        
     }
 }
 
 - (void)setDataSource:(id<UITableViewDataSource>)dataSource{
+    
     [super setDataSource:dataSource];
     Protocol *delegateProtocol = objc_getProtocol("UITableViewDataSource");
     unsigned int count;
     struct objc_method_description * method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
     for (int i=0; i<count; i++) {
+        
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
+            
             replaceDatasource(method_des->name);
+            
         }
         method_des++;
     }
     method_des = protocol_copyMethodDescriptionList(delegateProtocol, YES, YES, &count);
     for (int i=0; i<count; i++) {
         if ([NSStringFromSelector(method_des->name) hasSuffix:@"AtIndexPath:"]) {
+            
             replaceDatasource(method_des->name);
+            
         }
         method_des++;
+        
     }
     replaceDatasource(@selector(tableView:numberOfRowsInSection:));
 }
 
 - (NSMutableArray<LogicIndexPath *> *)spreadAssistants{
+    
     if (!_spreadAssistants) {
+        
         _spreadAssistants = [NSMutableArray array];
+        
     }
     return _spreadAssistants;
+    
 }
 
 - (NSMutableArray<ActualIndexPath *> *)assistantsIndexPaths{
+    
     if (!_assistantsIndexPaths) {
+        
         _assistantsIndexPaths = [NSMutableArray array];
+        
     }
     return _assistantsIndexPaths;
+    
 }
 
 #pragma mark transformer
@@ -149,8 +189,11 @@ SEL stitchingHookSelector(SEL selector){
     NSInteger section = indexPath.section;
     __block NSInteger row = indexPath.row;
     [self.assistantsIndexPaths enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
         if (obj.section == section && obj.row<=indexPath.row) {
+            
             row--;
+            
         }
     }];
     return [NSIndexPath indexPathForRow:row inSection:section];
@@ -161,11 +204,15 @@ SEL stitchingHookSelector(SEL selector){
     NSInteger section = indexPath.section;
     __block NSInteger row = indexPath.row;
     [self.spreadAssistants enumerateObjectsUsingBlock:^(LogicIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
         if (obj.section == indexPath.section && obj.row<indexPath.row) {
+            
             row++;
+            
         }
     }];
     return [NSIndexPath indexPathForRow:row inSection:section];
+    
 }
 
 - (ActualIndexPath *)YF_logicIndexPath2Actual:(LogicIndexPath *)indexPath{
@@ -178,24 +225,32 @@ SEL stitchingHookSelector(SEL selector){
     
     NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
+            
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row+1 inSection:obj.section];
             [self.assistantsIndexPaths replaceObjectAtIndex:idx withObject:newIndexPath];
+            
         }
     }];
     [self.assistantsIndexPaths addObject:indexPath];
+    
 }
 
 - (void)removeAssistantIndexPath:(ActualIndexPath *)indexPath{
     
     NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
+            
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row-1 inSection:obj.section];
             [self.assistantsIndexPaths replaceObjectAtIndex:idx withObject:newIndexPath];
+            
         }
     }];
     [self.assistantsIndexPaths removeObject:indexPath];
+    
 }
 
 #pragma mark delegate
@@ -400,5 +455,6 @@ SEL stitchingHookSelector(SEL selector){
     }
     return NO;
 }
+
 
 @end

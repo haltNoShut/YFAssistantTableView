@@ -53,7 +53,7 @@
 
 - (void)tableView:(YFAssistantTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:[tableView logicIndexPath2Actual:indexPath] animated:YES];
     [tableView spreadAssistant:indexPath];
     
 }
@@ -112,7 +112,12 @@
 
 - (UITableViewRowAnimation )YFAssistantTableViewRetractAnimation:(YFAssistantTableView *)tableView{
     
-    return UITableViewRowAnimationMiddle;
+    return UITableViewRowAnimationTop;
+}
+
+- (UITableViewRowAnimation )YFAssistantTableViewSpreadAnimation:(YFAssistantTableView *)tableView{
+    
+    return UITableViewRowAnimationTop;
 }
 
 @end

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,17 +17,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OZO-9Y-kW4">
-                        <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
                     </webView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="wTZ-kf-Zmj"/>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="wTZ-kf-Zmj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="60" id="Ayw-56-y3K"/>
                     <constraint firstAttribute="trailing" secondItem="OZO-9Y-kW4" secondAttribute="trailing" id="G6W-Es-wYf"/>
                     <constraint firstItem="OZO-9Y-kW4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Mih-Fn-TEf"/>
                     <constraint firstAttribute="bottom" secondItem="OZO-9Y-kW4" secondAttribute="bottom" id="Xth-vT-zii"/>
+                    <constraint firstItem="wTZ-kf-Zmj" firstAttribute="centerX" secondItem="OZO-9Y-kW4" secondAttribute="centerX" id="voV-bR-lgu"/>
                     <constraint firstItem="OZO-9Y-kW4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ztz-0O-X2R"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="_ACIn" destination="wTZ-kf-Zmj" id="D8h-K0-2SF"/>
                 <outlet property="_webView" destination="OZO-9Y-kW4" id="CnF-xo-uWd"/>
             </connections>
         </tableViewCell>
