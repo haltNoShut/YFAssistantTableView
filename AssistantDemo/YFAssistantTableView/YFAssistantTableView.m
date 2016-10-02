@@ -145,6 +145,7 @@ SEL stitchingHookSelector(SEL selector){
 #pragma mark transformer
 
 - (LogicIndexPath *)actualIndexPath2Logic:(ActualIndexPath *)indexPath{
+    
     NSInteger section = indexPath.section;
     __block NSInteger row = indexPath.row;
     [self.assistantsIndexPaths enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -156,6 +157,7 @@ SEL stitchingHookSelector(SEL selector){
 }
 
 - (ActualIndexPath *)logicIndexPath2Actual:(LogicIndexPath *)indexPath{
+    
     NSInteger section = indexPath.section;
     __block NSInteger row = indexPath.row;
     [self.spreadAssistants enumerateObjectsUsingBlock:^(LogicIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -167,12 +169,14 @@ SEL stitchingHookSelector(SEL selector){
 }
 
 - (ActualIndexPath *)YF_logicIndexPath2Actual:(LogicIndexPath *)indexPath{
+    
     ActualIndexPath *actualBuf = [self logicIndexPath2Actual:indexPath];
     return [NSIndexPath indexPathForRow:actualBuf.row+1 inSection:actualBuf.section];
 }
 
 - (void)addAssistantIndexPath:(ActualIndexPath *)indexPath{
-    NSArray *indexPathBuf = [self.assistantsIndexPaths mutableCopy];
+    
+    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row+1 inSection:obj.section];
@@ -183,7 +187,8 @@ SEL stitchingHookSelector(SEL selector){
 }
 
 - (void)removeAssistantIndexPath:(ActualIndexPath *)indexPath{
-    NSArray *indexPathBuf = [self.assistantsIndexPaths mutableCopy];
+    
+    NSArray *indexPathBuf = [self.assistantsIndexPaths copy];
     [indexPathBuf enumerateObjectsUsingBlock:^(ActualIndexPath *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.section == indexPath.section && obj.row > indexPath.row) {
             NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:obj.row-1 inSection:obj.section];
@@ -196,6 +201,7 @@ SEL stitchingHookSelector(SEL selector){
 #pragma mark delegate
 
 - (NSInteger)hookTableView:(YFAssistantTableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
     __block NSInteger count = 0;
     [tableView.spreadAssistants enumerateObjectsUsingBlock:^(LogicIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.section == section) {

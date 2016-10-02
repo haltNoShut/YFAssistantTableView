@@ -13,6 +13,7 @@
 		3C24EAE91DA0070A00D6F8E2 /* SynopsisCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C24EAE71DA0070A00D6F8E2 /* SynopsisCell.xib */; };
 		3C24EAED1DA0072A00D6F8E2 /* DetailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C24EAEB1DA0072A00D6F8E2 /* DetailsCell.m */; };
 		3C24EAEE1DA0072A00D6F8E2 /* DetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C24EAEC1DA0072A00D6F8E2 /* DetailsCell.xib */; };
+		3C2CB90D1DA100C0009E5773 /* DetailNewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2CB90C1DA100C0009E5773 /* DetailNewsModel.m */; };
 		3C3267F21D91409100A587CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3267F11D91409100A587CD /* main.m */; };
 		3C3267F51D91409100A587CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3267F41D91409100A587CD /* AppDelegate.m */; };
 		3C3267FB1D91409100A587CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C3267F91D91409100A587CD /* Main.storyboard */; };
@@ -36,6 +37,8 @@
 		3C24EAEA1DA0072A00D6F8E2 /* DetailsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsCell.h; sourceTree = "<group>"; };
 		3C24EAEB1DA0072A00D6F8E2 /* DetailsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsCell.m; sourceTree = "<group>"; };
 		3C24EAEC1DA0072A00D6F8E2 /* DetailsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailsCell.xib; sourceTree = "<group>"; };
+		3C2CB90B1DA100C0009E5773 /* DetailNewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailNewsModel.h; sourceTree = "<group>"; };
+		3C2CB90C1DA100C0009E5773 /* DetailNewsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailNewsModel.m; sourceTree = "<group>"; };
 		3C3267ED1D91409100A587CD /* AssistantDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssistantDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3267F11D91409100A587CD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3C3267F31D91409100A587CD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -73,6 +76,8 @@
 				3C24EAEA1DA0072A00D6F8E2 /* DetailsCell.h */,
 				3C24EAEB1DA0072A00D6F8E2 /* DetailsCell.m */,
 				3C24EAEC1DA0072A00D6F8E2 /* DetailsCell.xib */,
+				3C2CB90B1DA100C0009E5773 /* DetailNewsModel.h */,
+				3C2CB90C1DA100C0009E5773 /* DetailNewsModel.m */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				3C24EAE11D9FFE6000D6F8E2 /* NewsViewController.m in Sources */,
 				3C3267F51D91409100A587CD /* AppDelegate.m in Sources */,
 				3C3267F21D91409100A587CD /* main.m in Sources */,
+				3C2CB90D1DA100C0009E5773 /* DetailNewsModel.m in Sources */,
 				3C24EAE41D9FFEBF00D6F8E2 /* NewsModel.m in Sources */,
 				3C24EAED1DA0072A00D6F8E2 /* DetailsCell.m in Sources */,
 			);

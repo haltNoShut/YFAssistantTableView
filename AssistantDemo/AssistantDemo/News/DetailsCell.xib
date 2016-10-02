@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <frame key="frameInset" width="320" height="199.5"/>
+                <frame key="frameInset" width="320" height="199"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OZO-9Y-kW4">
@@ -27,7 +27,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="_webView" destination="OZO-9Y-kW4" id="fv9-4S-L3O"/>
+                <outlet property="_webView" destination="OZO-9Y-kW4" id="CnF-xo-uWd"/>
             </connections>
         </tableViewCell>
     </objects>

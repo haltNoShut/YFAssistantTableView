@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class DetailNewsModel;
 @interface DetailsCell : UITableViewCell
 
-@property (strong, nonatomic)NSString *URL;
+@property (strong, nonatomic)DetailNewsModel *model;
 
 @end

@@ -12,7 +12,7 @@
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) NSString *digest;
 @property (copy, nonatomic) NSString *imgsrc;
-@property (copy, nonatomic) NSString *detailURL;
+@property (copy, nonatomic) NSString *postid;
 
 + (void )requestNewsModels:(void (^)(NSArray *models)) completion;
 

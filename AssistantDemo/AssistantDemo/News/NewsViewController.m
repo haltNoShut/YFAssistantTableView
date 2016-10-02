@@ -9,6 +9,7 @@
 #import "NewsViewController.h"
 #import "YFAssistantTableView.h"
 #import "NewsModel.h"
+#import "DetailNewsModel.h"
 #import "SynopsisCell.h"
 #import "DetailsCell.h"
 
@@ -97,13 +98,21 @@
     DetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"details" forIndexPath:[tableView logicIndexPath2Actual:indexPath]];
     
     NewsModel *model = self.models[indexPath.row];
-    [cell setURL:model.detailURL];
+    [DetailNewsModel requestDetailNews:model.postid completion:^(DetailNewsModel *model) {
+        
+        [cell setModel:model];
+    }];
     
     return cell;
     
 }
 - (CGFloat )YFAssistantTableView:(YFAssistantTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 300;
+}
+
+- (UITableViewRowAnimation )YFAssistantTableViewRetractAnimation:(YFAssistantTableView *)tableView{
+    
+    return UITableViewRowAnimationMiddle;
 }
 
 @end

@@ -15,7 +15,7 @@
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     
-    return @{@"detailURL":@"url_3w"};
+    return nil;
 }
 
 + (void )requestNewsModels:(void (^)(NSArray *models)) completion{

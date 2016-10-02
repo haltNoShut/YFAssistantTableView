@@ -7,6 +7,7 @@
 //
 
 #import "DetailsCell.h"
+#import "DetailNewsModel.h"
 
 @implementation DetailsCell
 {
@@ -14,10 +15,16 @@
     __weak IBOutlet UIWebView *_webView;
 }
 
-- (void)setURL:(NSString *)URL {
+-(void)prepareForReuse{
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:URL]];
-    [_webView loadRequest:request];
+    [super prepareForReuse];
+    [_webView loadHTMLString:@"" baseURL:nil];
+}
+
+- (void)setModel:(DetailNewsModel *)model{
+    
+    _model = model;
+    [_webView loadHTMLString:model.content baseURL:nil];
     
 }
 
