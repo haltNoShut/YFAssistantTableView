@@ -24,6 +24,79 @@ method_exchangeImplementations(method1, method2);\
 }\
 while (0);
 
+@interface YFAssistantTableViewManager : NSObject
+
++ (instancetype)manager;
+
+- (BOOL )registeDelegate:(id<UITableViewDelegate> ) delegate;
+
+- (BOOL )registeDataSource:(id<UITableViewDataSource> ) dataSource;
+
+@property (strong, nonatomic)NSMutableArray *delegates;
+
+@property (strong, nonatomic)NSMutableArray *dataSources;
+
+@end
+
+@implementation YFAssistantTableViewManager
+
++ (instancetype )manager{
+    
+    static YFAssistantTableViewManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [YFAssistantTableViewManager new];
+    });
+    return manager;
+}
+
+- (BOOL )registeDelegate:(id<UITableViewDelegate> ) delegate {
+    
+    NSString *className = NSStringFromClass([delegate class]);
+    if (!className || [self.delegates containsObject:className]) {
+        
+        return NO;
+    }
+    [self.delegates addObject:className];
+    return YES;
+    
+}
+
+- (BOOL )registeDataSource:(id<UITableViewDataSource> ) dataSource {
+    
+    NSString *className = NSStringFromClass([dataSource class]);
+    if (!className || [self.dataSources containsObject:className]) {
+        
+        return NO;
+    }
+    [self.dataSources addObject:className];
+    return YES;
+
+}
+
+- (NSMutableArray *)delegates {
+    
+    if (!_delegates) {
+        
+        _delegates = [NSMutableArray array];
+    }
+    
+    return _delegates;
+}
+
+- (NSMutableArray *)dataSources {
+    
+    if (!_dataSources) {
+        
+        _dataSources = [NSMutableArray array];
+    }
+    
+    return _dataSources;
+    
+}
+
+@end
+
 @interface YFAssistantTableView ()
 /**
  *  点击的cell的逻辑indexPath
@@ -105,6 +178,12 @@ SEL stitchingHookSelector(SEL selector){
 - (void)setDelegate:(id<UITableViewDelegate>)delegate{
     
     [super setDelegate:delegate];
+    
+    if (![[YFAssistantTableViewManager manager] registeDelegate:delegate]) {
+        
+        return ;
+    }
+    
     Protocol *delegateProtocol = objc_getProtocol("UITableViewDelegate");
     unsigned int count;
     struct objc_method_description *method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);
@@ -135,6 +214,12 @@ SEL stitchingHookSelector(SEL selector){
 - (void)setDataSource:(id<UITableViewDataSource>)dataSource{
     
     [super setDataSource:dataSource];
+    
+    if (![[YFAssistantTableViewManager manager] registeDataSource:dataSource]) {
+        
+        return ;
+    }
+    
     Protocol *delegateProtocol = objc_getProtocol("UITableViewDataSource");
     unsigned int count;
     struct objc_method_description * method_des = protocol_copyMethodDescriptionList(delegateProtocol, NO, YES, &count);

@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-
+    
     [self setupTableView];
     
     [NewsModel requestNewsModels:^(NSArray *models) {
@@ -39,6 +39,7 @@
 }
 
 - (void)setupTableView {
+    
     self.tableView = [[YFAssistantTableView alloc]initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -47,6 +48,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"DetailsCell" bundle:nil] forCellReuseIdentifier:@"details"];
     self.tableView.retractWhenSpread = YES;
     [self.view addSubview:self.tableView];
+    
 }
 
 #pragma mark tableView delegate
